@@ -117,20 +117,20 @@ if !@options[:force]
   exit 0
 end
 
-puts "==> Unfavoriting #{tweets_to_unfavourite.size} tweets"
-tweets_not_found = []
-tweets_to_unfavourite.each_slice(MAX_TWEETS_PER_REQUEST) do |tweets|
+puts "==> Deleting #{tweets_to_delete.size} tweets"
+tweets_to_delete.each_slice(MAX_TWEETS_PER_REQUEST) do |tweets|
   begin
-    api_call :unfavorite, tweets
+    api_call :destroy_status, tweets
   rescue Twitter::Error::NotFound
     tweets_not_found += tweets
   end
 end
 
-puts "==> Deleting #{tweets_to_delete.size} tweets"
-tweets_to_delete.each_slice(MAX_TWEETS_PER_REQUEST) do |tweets|
+puts "==> Unfavoriting #{tweets_to_unfavourite.size} tweets"
+tweets_not_found = []
+tweets_to_unfavourite.each_slice(MAX_TWEETS_PER_REQUEST) do |tweets|
   begin
-    api_call :destroy_status, tweets
+    api_call :unfavorite, tweets
   rescue Twitter::Error::NotFound
     tweets_not_found += tweets
   end
